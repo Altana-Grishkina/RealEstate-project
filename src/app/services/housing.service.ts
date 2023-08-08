@@ -17,7 +17,7 @@ export class HousingService {
         const propertiesArray: Array<IProperty> = [];
         for(const id in data) {
           if(data.hasOwnProperty(id)) {
-            propertiesArray.push(data[id]);
+            propertiesArray.push(data[id as keyof object]);
           }
         }
         return propertiesArray;
