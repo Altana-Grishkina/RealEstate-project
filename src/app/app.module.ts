@@ -12,6 +12,7 @@ import {Routes, RouterModule} from '@angular/router';
 import { PropertyDetailComponent } from './property/property-detail/property-detail.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { UserLoginComponent } from './user/user-login/user-login.component';
+import { UserServiceService } from './services/user-service.service';
 
 
 const appRoutes: Routes = [
@@ -42,7 +43,9 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [HousingService],
+  providers: [HousingService,
+              UserServiceService
+              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
