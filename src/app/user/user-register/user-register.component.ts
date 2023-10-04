@@ -11,75 +11,58 @@ import { AlertifyService } from 'src/app/services/alertify.service';
 })
 export class UserRegisterComponent implements OnInit {
 
-  registerationForm!: FormGroup;
-  user!: User;
-  userSubmitted!: boolean;
+  registerationForm: FormGroup;
+  user: User;
+  userSubmitted: boolean;
   constructor(private fb: FormBuilder,
               private userService: UserServiceService,
               private alertify: AlertifyService) { }
 
   ngOnInit() {
     // this.registerationForm = new FormGroup({
-    //   userName: new FormControl('Mark', Validators.required),
+    //   userName: new FormControl(null, Validators.required),
     //   email: new FormControl(null, [Validators.required, Validators.email]),
     //   password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
     //   confirmPassword: new FormControl(null, [Validators.required]),
-    //   modbile: new FormControl(null, [Validators.required, Validators.maxLength(10)])
-    // }, this.passwordMatchingValidator);
-    this.createRegistrationForm();
+    //   mobile: new FormControl(null, [Validators.required, Validators.maxLength(10)])
+    // }, this.passwordMatchingValidatior);
+    this.createRegisterationForm();
+    // this.registerationForm.controls['userName'].setValue('Default Value');
   }
 
-  createRegistrationForm(){
-    this.registerationForm = this.fb.group({
+  createRegisterationForm() {
+    this.registerationForm =  this.fb.group({
       userName: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(8)]],
       confirmPassword: [null, Validators.required],
-      modbile: [null, [Validators.required, Validators.maxLength(10)]]
-    }, {validators: this.passwordMatchingValidator})
+      mobile: [null, [Validators.required, Validators.maxLength(10)]]
+    }, {validators: this.passwordMatchingValidatior});
   }
 
-  passwordMatchingValidator(fc: AbstractControl): ValidationErrors | null {
-    return fc.get('password')?.value === fc.get('confirmPassword')?.value ? null :
-      { notmatched: true }
+  passwordMatchingValidatior(fg: FormGroup): Validators {
+    return fg.get('password').value === fg.get('confirmPassword').value ? null :
+    {notmatched: true};
   }
 
-  //Getter methods for all form controll
-  get userName(){
-    return this.registerationForm.get('userName') as FormControl;
-  }
 
-  get email(){
-    return this.registerationForm.get('email') as FormControl;
-  }
-
-  get password(){
-    return this.registerationForm.get('password') as FormControl;
-  }
-
-  get confirmPassword(){
-    return this.registerationForm.get('confirmPassword') as FormControl;
-  }
-
-  get mobile(){
-    return this.registerationForm.get('mobile') as FormControl;
-  }
   onSubmit() {
     console.log(this.registerationForm.value);
     this.userSubmitted = true;
 
-    if(this.registerationForm.valid){
+    if (this.registerationForm.valid) {
       // this.user = Object.assign(this.user, this.registerationForm.value);
       this.userService.addUser(this.userData());
-      this.registerationForm.reset();
-      this.userSubmitted = false;
+      this.onReset();
       this.alertify.success('Congrats, you are successfully registered');
-    } else {
-      this.alertify.error('Kindly provide the  required fields');
+  } else {
+      this.alertify.error('Kindly provide the required fields');
+  }
+  }
 
-    }
-
-
+  onReset() {
+    this.userSubmitted = false;
+    this.registerationForm.reset();
   }
 
 
@@ -92,4 +75,24 @@ export class UserRegisterComponent implements OnInit {
     }
   }
 
+    // ------------------------------------
+  // Getter methods for all form controls
+  // ------------------------------------
+  get userName() {
+    return this.registerationForm.get('userName') as FormControl;
+  }
+
+  get email() {
+    return this.registerationForm.get('email') as FormControl;
+  }
+  get password() {
+    return this.registerationForm.get('password') as FormControl;
+  }
+  get confirmPassword() {
+    return this.registerationForm.get('confirmPassword') as FormControl;
+  }
+  get mobile() {
+    return this.registerationForm.get('mobile') as FormControl;
+  }
+  // ------------------------
 }

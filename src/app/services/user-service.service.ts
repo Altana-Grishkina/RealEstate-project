@@ -8,10 +8,10 @@ export class UserServiceService {
 
   constructor() { }
 
-  addUser(user: User){
+  addUser(user: User) {
     let users = [];
-    if(localStorage.getItem('Users')){
-      users = JSON.parse(localStorage.getItem('Users')|| '{}');
+    if (localStorage.getItem('Users')) {
+      users = JSON.parse(localStorage.getItem('Users') as string);
       users = [user, ...users];
     } else {
       users = [user];
